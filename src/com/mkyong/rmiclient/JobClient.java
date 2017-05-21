@@ -7,7 +7,8 @@ package com.mkyong.rmiclient;
 
 import com.mkyong.rmiinterface.MergeSort;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,13 +18,13 @@ public class JobClient {
     private ArrayList<String> job;
     private Worker[] worker = new Worker[2];
     
+    
     public JobClient(){
-        
         worker[0] = new Worker();
         worker[1] = new Worker();
     }
     
-    public void clientStartJob(ArrayList<String> job) throws InterruptedException{
+    public void clientStartJob(ArrayList<String> job){
         int end = job.size()-1;
         int middle = end/2;
         ArrayList<String> left = new ArrayList(job.subList(0, middle));
@@ -34,8 +35,12 @@ public class JobClient {
         
         worker[0].startJob(left, 0, left.size()-1);
         worker[1].startJob(right, 0, right.size()-1);
-        worker[0].join();
-        worker[1].join();
+        try {
+            worker[0].join();
+            worker[1].join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println(job.size());
         job = MergeSort.DoMerge(left, right);
         System.out.println(job.size());

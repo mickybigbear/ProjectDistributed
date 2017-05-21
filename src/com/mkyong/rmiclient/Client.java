@@ -1,71 +1,77 @@
 package com.mkyong.rmiclient;
 
+import com.mkyong.rmiinterface.Const;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import javax.swing.JOptionPane;
-
-import com.mkyong.rmiinterface.Book;
 import com.mkyong.rmiinterface.MergeSort;
-import com.mkyong.rmiinterface.RMIInterface;
+import com.mkyong.rmiinterface.RMIService;
+import com.mkyong.rmiinterface.Task;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client {
-	private static RMIInterface look_up;
+	private static RMIService look_up;
 
                 
-	public static void main(String[] args) /*throws MalformedURLException, RemoteException, NotBoundException*/ {
+	public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException  {
+                look_up = (RMIService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
+                while(true){
+                    askTask();
+                }
 
-                
-		JobClient bigJob = new JobClient();
-            try {
-                ArrayList<String> job = new ArrayList();
-                getJob(job);
-                System.out.println(job.size());
-                bigJob.clientStartJob(job);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            }
-//                
-//                
-//		boolean findmore;
-//		do{
-//			String[] options = {"Show All", "Find a book", "Exit"};
-//			int choice = JOptionPane.showOptionDialog(null, "Choose an action", "Option dialog", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-//			
-//			switch(choice){
-//				case 0:
-//					List<Book> list = look_up.allBooks();
-//					StringBuilder message = new StringBuilder();
-//					list.forEach(x -> {message.append(x.toString() + "\n");});
-//					JOptionPane.showMessageDialog(null, new String(message));
-//					break;
-//				case 1:
-//					String isbn = JOptionPane.showInputDialog("Type the isbn of the book you want to find.");
-//					try{
-//						Book response = look_up.findBook(new Book(isbn));
-//						JOptionPane.showMessageDialog(null, "Title: " + response.getTitle() + "\n" + "Cost: $" + response.getCost(), response.getIsbn(), JOptionPane.INFORMATION_MESSAGE);
-//					}catch(NoSuchElementException ex){
-//						JOptionPane.showMessageDialog(null, "Not found");
-//					}
-//					break;
-//				default:
-//					System.exit(0);
-//					break;
-//			}
-//			findmore = (JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Exit", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
-//		}while(findmore);
+//               MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 10000000);
+//               MergeSort.CreateJobFromFile(Const._PathFileJob, new ArrayList());
+//               while(true){
+//                   try {
+//                       Thread.sleep(5000);
+//                   } catch (InterruptedException ex) {
+//                       Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+//                   }
+//               }
+//		JobClient bigJob = new JobClient();
+//     
+//                ArrayList<String> job = new ArrayList();
+//                getJob(job);
+//                System.out.println(job.size());
+//                bigJob.clientStartJob(job);
+           
 	}
         
         private static void getJob(ArrayList list){
             MergeSort.genTextFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", "UTF-8", 10, 10000000);
             MergeSort.CreateJobFromFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", list);
+        }
+        
+        public static Task askTask() throws MalformedURLException, RemoteException, NotBoundException {
+            boolean befree = true;
+            Task task = null;
+            while(befree){
+                task=look_up.getTask();
+                if(task!=null){
+                    befree=false;
+                }else{
+                    System.out.println("Don't have task.");
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            System.out.println("busy"+task.getId());
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            look_up.sendResult(task);
+            task=null;
+            befree=true;
+            System.out.println("befree");
+            return task;
         }
         
 
