@@ -14,6 +14,8 @@ import java.rmi.server.UnicastRemoteObject;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *
@@ -21,35 +23,50 @@ import java.util.ArrayList;
  */
 public class RmiServiceImp extends UnicastRemoteObject implements RMIService{
     
+    private static Task task;
     private ArrayList<Task> taskList = new ArrayList();
+    private static LinkedBlockingQueue<Task> taskqueue = new LinkedBlockingQueue<Task>();
+    private static LinkedList<Task> sortedtask = new LinkedList<Task>();
+    private static TimeOutChecker toc = new TimeOutChecker();
+    private static Thread t = null;
     
     protected RmiServiceImp() throws RemoteException{
         super();
+        toc.setSortedTask(sortedtask);
+        toc.setTaskQueue(taskqueue);
+        t=new Thread(toc);
+        t.setPriority(1);
+        t.start();
     }
     
     @Override
     public Task getTask() throws RemoteException {
-        System.out.println("ass");
-        Task task = null;
-        for(int i=0;i<taskList.size();i++){
-            if(!(taskList.get(i).getStatus()||taskList.get(i).getHaveHolder())){
-                System.out.println("asdfghjk"+i);
-                taskList.get(i).setHaveHolder(true);
-                task=taskList.get(i);
-                i=taskList.size();
+        if(!(taskqueue.isEmpty())){
+                task=taskqueue.remove();
+                if(!(task.getStatus()||task.getHaveHolder())){
+                    System.out.println("Send"+task.getId());
+                        task.setHaveHolder(true);
+                        task.genTimeStamp();
+                        sortedtask.add(task);
+                }
             }
-            else{
-                task=null;
-            }
-        }
-        return task;
+            else task=null;
+            toc.setSortedTask(sortedtask);
+            toc.setTaskQueue(taskqueue);
+            return task;
     }
 
     @Override
     public void sendResult(Task t) throws RemoteException {
-        t.setHaveHolder(false);
-        t.setStatus(true);
-        taskList.set(t.getId(), t);
+        for(int i=0;i<sortedtask.size();i++){
+            if(sortedtask.get(i).getId()==t.getId()){
+                System.out.print("receiveSorted"+sortedtask.get(i).getId());
+                t.setHaveHolder(false);
+                t.setStatus(true);
+                sortedtask.set(i, t);
+            }
+        }
     }
+    
   
 }

@@ -6,8 +6,10 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import com.mkyong.rmiinterface.MergeSort;
+import com.mkyong.rmiinterface.RMIInterface;
 import com.mkyong.rmiinterface.RMIService;
 import com.mkyong.rmiinterface.Task;
+import java.rmi.ConnectException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +51,16 @@ public class Client {
             boolean befree = true;
             Task task = null;
             while(befree){
-                task=look_up.getTask();
+                try {
+                    task=look_up.getTask();
+                }
+                catch(ConnectException e) {
+                    try {
+                        look_up = (RMIService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
+                    }
+                        catch(ConnectException ex) {
+                    }
+                }
                 if(task!=null){
                     befree=false;
                 }else{

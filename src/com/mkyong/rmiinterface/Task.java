@@ -1,12 +1,16 @@
 package com.mkyong.rmiinterface;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+
+import java.util.ArrayList;
 
 public class Task implements Serializable{
     private int id;
     private boolean status;
     private boolean  haveholder;
     private String data;
+    private Timestamp timestamp = null;
     
 
     public Task(int id,String data){
@@ -35,5 +39,11 @@ public class Task implements Serializable{
     }
     public void setData(String data){
         this.data=data;
+    }
+    public void genTimeStamp() {
+        timestamp = new Timestamp(System.currentTimeMillis());
+    }
+    public Timestamp getTimeStamp() {
+        return timestamp;
     }
 }
