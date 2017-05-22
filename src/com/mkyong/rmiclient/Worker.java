@@ -20,7 +20,7 @@ public class Worker extends Thread{
     }
     
     public void run(){
-       MergeSort.DoMergeSort(job, start, end);
+       MergeSort.DoMergeSort(job, start, end); 
     }
     
     public void startJob(ArrayList<String> job, int start, int end){

@@ -15,42 +15,46 @@ import java.util.Queue;
  * @author Micky
  */
 public class JobSchedule {
-    public LinkedList<Task> bigTask;
+    
+    public ArrayList<String> jobs;
+    public LinkedList<Task> unSortTask;
+    public LinkedList<Task> sortTask;
     public LinkedList<Task> sendTask;
     
     public JobSchedule(ArrayList<String> jobs){
-       doJobSchedule(jobs);
+       this.jobs = jobs;
+       unSortTask = new LinkedList();
+       sortTask = new LinkedList();
+       sendTask = new LinkedList();
+       doJobSchedule();
     }
     
-    private void doJobSchedule(ArrayList<String> jobs){
+    private void doJobSchedule(){
         int start, end, size = jobs.size(),range = size/128;
-        for(int i=0;i<100;i++){
+        for(int i=0;i<128;i++){
             start = i*range; 
             end = (start + range)-1;
             if(end>size-1){
                 end = (size-1)-end;
             }
-            bigTask.add(new Task(i, new ArrayList<String>(jobs.subList(start, end))));
+            System.out.println(start+" "+end);
+            unSortTask.add(new Task(i, new ArrayList<String>(jobs.subList(start, end))));
         }
     }
+
     
-    public Task pullFirstTask(){
-        return bigTask.pollFirst();
-    }
-    
-    public void addFirstToListSend(Task task){
-        if(task!=null){
-            sendTask.add(task);
+    public Task searchSendTask(int id){
+        Task t;
+        for(int i=0;i<=sendTask.size()-1;i++){
+            if( (t = sendTask.get(id)).getId() == id){
+                return t;
+            }
         }
+        return null;
     }
     
-    public void addLastToListJob(Task task){
-        bigTask.addFirst(task);
-    }
     
-    public void serachSendTask(int id){
-        for(int i=0;i<=send)
-    }
+    
     
     
     
