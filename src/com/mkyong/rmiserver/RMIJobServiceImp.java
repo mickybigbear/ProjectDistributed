@@ -5,7 +5,8 @@
  */
 package com.mkyong.rmiserver;
 
-import com.mkyong.rmiinterface.RMIService;
+import com.mkyong.rmiinterface.Const;
+import com.mkyong.rmiinterface.MergeSort;
 import com.mkyong.rmiinterface.Task;
 
 import java.rmi.RemoteException;
@@ -16,12 +17,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
+import com.mkyong.rmiinterface.RMIJobService;
 
 /**
  *
  * @author Micky
  */
-public class RmiServiceImp extends UnicastRemoteObject implements RMIService{
+public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobService{
     
     private static Task task;
     private ArrayList<Task> taskList = new ArrayList();
@@ -29,8 +31,9 @@ public class RmiServiceImp extends UnicastRemoteObject implements RMIService{
     private static LinkedList<Task> sortedtask = new LinkedList<Task>();
     private static TimeOutChecker toc = new TimeOutChecker();
     private static Thread t = null;
+    private JobSchedule jobSchedule;
     
-    protected RmiServiceImp() throws RemoteException{
+    protected RMIJobServiceImp() throws RemoteException{
         super();
         toc.setSortedTask(sortedtask);
         toc.setTaskQueue(taskqueue);
@@ -41,32 +44,32 @@ public class RmiServiceImp extends UnicastRemoteObject implements RMIService{
     
     @Override
     public Task getTask() throws RemoteException {
-        if(!(taskqueue.isEmpty())){
-                task=taskqueue.remove();
-                if(!(task.getStatus()||task.getHaveHolder())){
-                    System.out.println("Send"+task.getId());
-                        task.setHaveHolder(true);
-                        task.genTimeStamp();
-                        sortedtask.add(task);
-                }
-            }
-            else task=null;
-            toc.setSortedTask(sortedtask);
-            toc.setTaskQueue(taskqueue);
-            return task;
+        Task task = jobSchedule.pullFirstTask();
+        if(task!=null){
+            task.setHaveHolder(true);
+            task.genTimeStamp();
+            jobSchedule.addFirstToListSend(task);
+        }
+        return task;
     }
 
     @Override
-    public void sendResult(Task t) throws RemoteException {
-        for(int i=0;i<sortedtask.size();i++){
-            if(sortedtask.get(i).getId()==t.getId()){
-                System.out.print("receiveSorted"+sortedtask.get(i).getId());
-                t.setHaveHolder(false);
-                t.setStatus(true);
-                sortedtask.set(i, t);
-            }
+    public void sendResult(Task task) throws RemoteException {
+        if(task.isEmpty()){
+            return;
         }
+        Task temp;
+        task.setStatus(true);
+        task.setHaveHolder(false);
     }
     
+    private void init(){
+        System.out.println("Server generate text file...");
+        ArrayList<String> temp = new ArrayList();
+        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 1000000);
+        System.out.println("do job schedule");
+        jobSchedule = new JobSchedule(temp);
+        temp = null;
+    }
   
 }

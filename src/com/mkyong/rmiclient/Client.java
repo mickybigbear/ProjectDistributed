@@ -7,19 +7,19 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import com.mkyong.rmiinterface.MergeSort;
 import com.mkyong.rmiinterface.RMIInterface;
-import com.mkyong.rmiinterface.RMIService;
 import com.mkyong.rmiinterface.Task;
 import java.rmi.ConnectException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.mkyong.rmiinterface.RMIJobService;
 
 public class Client {
-	private static RMIService look_up;
+	private static RMIJobService look_up;
 
                 
 	public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException  {
-                look_up = (RMIService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
+                look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
                 while(true){
                     askTask();
                 }
@@ -56,7 +56,7 @@ public class Client {
                 }
                 catch(ConnectException e) {
                     try {
-                        look_up = (RMIService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
+                        look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
                     }
                         catch(ConnectException ex) {
                     }

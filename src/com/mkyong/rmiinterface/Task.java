@@ -7,26 +7,26 @@ import java.util.ArrayList;
 
 public class Task implements Serializable{
     private int id;
-    private boolean status;
+    private boolean sort;
     private boolean  haveholder;
-    private String data;
+    private ArrayList<String> data;
     private Timestamp timestamp = null;
     
 
-    public Task(int id,String data){
+    public Task(int id,ArrayList<String> data){
         this.id=id;
         haveholder=false;
-        status=false;
+        sort=false;
         this.data=data;
     }
     public int getId(){
         return id;
     }
-    public boolean getStatus(){
-        return status;
+    public boolean isSort(){
+        return sort;
     }
     public void setStatus(boolean status){
-        this.status=status;
+        this.sort=status;
     }
     public boolean getHaveHolder(){
         return haveholder;
@@ -34,10 +34,10 @@ public class Task implements Serializable{
     public void setHaveHolder(boolean haveholder){
         this.haveholder=haveholder;
     }
-    public String getData(){
+    public ArrayList<String> getData(){
         return data;
     }
-    public void setData(String data){
+    public void setData(ArrayList<String> data){
         this.data=data;
     }
     public void genTimeStamp() {
@@ -45,5 +45,12 @@ public class Task implements Serializable{
     }
     public Timestamp getTimeStamp() {
         return timestamp;
+    }
+    
+    public boolean isEmpty(){
+        if(data!=null && data.size()>0){
+            return false;
+        }
+        return true;
     }
 }
