@@ -14,7 +14,7 @@ public class Const {
     public static final String _RMI_Name_Service1 = "service1";
     public static final String _IP_Server = "localhost";
     
-    public static final String _PathFileJob = "C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed/test/target.txt";
-    public static final String _PathFileResult = "C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed/test/Result.txt";
+    public static final String _PathFileJob = "D:/test/target.txt";
+    public static final String _PathFileResult = "D:/test/Result.txt";
     public static final String _Charset ="UTF-8";
 }

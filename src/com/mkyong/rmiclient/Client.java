@@ -16,16 +16,16 @@ import com.mkyong.rmiinterface.RMIJobService;
 
 public class Client {
 	private static RMIJobService look_up;
-
+        private static JobClient a;
                 
-	public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException  {
-                look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
-                while(true){
-                    askTask();
-                }
-
-//               MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 10000000);
-//               MergeSort.CreateJobFromFile(Const._PathFileJob, new ArrayList());
+	public static void main(String[] args) /*throws NotBoundException, MalformedURLException, RemoteException*/  {
+                //look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
+//                while(true){
+//                    //askTask();
+//                }
+             JobClient client = new JobClient();
+             client.startClient();
+        
 //               while(true){
 //                   try {
 //                       Thread.sleep(5000);
@@ -33,17 +33,11 @@ public class Client {
 //                       Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 //                   }
 //               }
-//		JobClient bigJob = new JobClient();
-//     
-//                ArrayList<String> job = new ArrayList();
-//                getJob(job);
-//                System.out.println(job.size());
-//                bigJob.clientStartJob(job);
-           
+                
 	}
         
         private static void getJob(ArrayList list){
-            MergeSort.genTextFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", "UTF-8", 10, 10000000);
+            MergeSort.genTextFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", "UTF-8", 10, 1000);
             MergeSort.CreateJobFromFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", list);
         }
         
@@ -58,7 +52,7 @@ public class Client {
                     try {
                         look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
                     }
-                        catch(ConnectException ex) {
+                    catch(ConnectException ex) {
                     }
                 }
                 if(task!=null){
@@ -84,6 +78,11 @@ public class Client {
             System.out.println("befree");
             return task;
         }
+        
+        
+        
+        
+        
         
 
 }

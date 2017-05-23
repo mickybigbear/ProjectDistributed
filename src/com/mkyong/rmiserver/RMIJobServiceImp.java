@@ -33,24 +33,38 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
     private static Thread t = null;
     private JobSchedule jobSchedule;
     
-    protected RMIJobServiceImp() throws RemoteException{
+    protected RMIJobServiceImp(JobSchedule jobSchedule) throws RemoteException{
         super();
-        toc.setSortedTask(sortedtask);
-        toc.setTaskQueue(taskqueue);
-        t=new Thread(toc);
-        t.setPriority(1);
-        t.start();
+        this.jobSchedule = jobSchedule;
+//        toc.setSortedTask(sortedtask);
+//        toc.setTaskQueue(taskqueue);
+//        t=new Thread(toc);
+//        t.setPriority(1);
+//        t.start();
     }
     
     @Override
     public Task getTask() throws RemoteException {
-        Task task = jobSchedule.pullFirstTask();
-        if(task!=null){
-            task.setHaveHolder(true);
-            task.genTimeStamp();
-            jobSchedule.addFirstToListSend(task);
+        Task task1,task2;
+        task1 = jobSchedule.unSortTask.poll();
+        if((task1)!=null){
+            jobSchedule.sendTask.add(task1);
+            System.out.println("send task1 : "+jobSchedule.sendTask.size());
+            return task1;
         }
-        return task;
+        else if((task1 = jobSchedule.sortTask.poll())!=null){
+            if(task1.getData2()!=null){ return task1; }
+            else if((task2 = jobSchedule.sortTask.poll())==null){
+                return null;
+            }else{
+                jobSchedule.sendTask.add(task1);
+                task1.joinTask(task2);
+                //System.out.println("send task2 : "+jobSchedule.sendTask.size());
+                System.out.println("task2 size "+task2.getData1().size());
+                return task1;
+            }
+        }
+        else {return null;}
     }
 
     @Override
@@ -58,18 +72,23 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
         if(task.isEmpty()){
             return;
         }
-        Task temp;
-        task.setStatus(true);
         task.setHaveHolder(false);
+        task.setStatus(true);
+        jobSchedule.sortTask.add(task);
+        System.out.print("resive task id: "+task.getId()+" size"+task.getData1().size()+"\n");
+        if(jobSchedule.deleteSendTask(task.getId())==null){
+            //System.out.println("task "+task.getId()+" not in sendTask");
+        }
+               
+        System.out.println("Unsort task : "+jobSchedule.unSortTask.size()+
+                "   sort task : "+jobSchedule.sortTask.size()+
+                "   send task : "+jobSchedule.sendTask.size());
+        if(jobSchedule.unSortTask.size()==0 && jobSchedule.sortTask.size()==1 && jobSchedule.sendTask.size()==0){
+            System.out.println("finish");
+            MergeSort.createFileResult(Const._PathFileResult, Const._Charset, jobSchedule.sortTask.get(0).getData1());
+        }
     }
     
-    private void init(){
-        System.out.println("Server generate text file...");
-        ArrayList<String> temp = new ArrayList();
-        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 1000000);
-        System.out.println("do job schedule");
-        jobSchedule = new JobSchedule(temp);
-        temp = null;
-    }
+   
   
 }

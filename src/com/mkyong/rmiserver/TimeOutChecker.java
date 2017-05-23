@@ -15,38 +15,46 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author falcon
  */
 public class TimeOutChecker implements Runnable {
-    private LinkedList<Task> sortedtask = new LinkedList<Task>();
-    private LinkedBlockingQueue<Task> taskqueue = new LinkedBlockingQueue<Task>();
+    public LinkedList<Task> unSortTask;
+    public LinkedList<Task> sortTask;
+    public LinkedList<Task> sendTask;
     private long diffTime = 0;
     private boolean x=true;
+    
+ 
     @Override
     public void run() {
-        while(x){
-            System.out.print("");
-            for(int i=0;i<sortedtask.size();i++){
-                diffTime=(new Date().getTime())-(sortedtask.get(i).getTimeStamp().getTime());
-                System.out.print("");
-                if((diffTime>10000)&&(sortedtask.get(i).getHaveHolder())){
-                    taskqueue.add(sortedtask.remove(i));
-                }
-            }
-        }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        Task task;
+//        while(x){
+//            System.out.print("");
+//            for(int i=0;i<sendTask.size();i++){
+//                task = sendTask.get(i);
+//                diffTime=(System.currentTimeMillis())-(task.getTimeStamp().getTime());
+//                if((diffTime>10000)&&(task.getHaveHolder())){
+//                    taskqueue.add(sortedtask.remove(i));
+//                }
+//            }
+//        }
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public void setSortedTask(LinkedList<Task> sortedtask){
-        this.sortedtask=sortedtask;
-    }
-    public LinkedList<Task> getSortedTask(){
-        return sortedtask;
-    }
-    public void setTaskQueue(LinkedBlockingQueue<Task> taskqueue){
-        this.taskqueue=taskqueue;
-    }
-    public void setStatus(boolean status,int id){
-        for(int i=1;i<sortedtask.size();i++){
-            if(sortedtask.get(i).getId()==id){
-                sortedtask.get(i).setStatus(status);
-            }
-        }
-    }
+    
+//    public void setSortedTask(LinkedList<Task> sortedtask){
+//        this.sortedtask=sortedtask;
+//    }
+//    
+//    public LinkedList<Task> getSortedTask(){
+//        return sortedtask;
+//    }
+//    
+//    public void setTaskQueue(LinkedBlockingQueue<Task> taskqueue){
+//        this.taskqueue=taskqueue;
+//    }
+//    
+//    public void setStatus(boolean status,int id){
+//        for(int i=1;i<sortedtask.size();i++){
+//            if(sortedtask.get(i).getId()==id){
+//                sortedtask.get(i).setStatus(status);
+//            }
+//        }
+//    }
 }
