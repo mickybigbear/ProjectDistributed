@@ -50,8 +50,12 @@ public class JobClient extends Thread{
     public void clientStartJob(Task task){
         ArrayList<String> data_1 = task.getData1();
         ArrayList<String> data_2 = task.getData2();
+        if(data_1.size()<2){
+            task.setStatus(true);
+            return;
+        }
         if(task.isSort()){
-            data_1 = MergeSort.DoMerge(data_1, data_2);
+            task.setData1(MergeSort.DoMerge(data_1, data_2));
             task.removeData(2);
             return;
         }

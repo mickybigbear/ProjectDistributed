@@ -33,7 +33,7 @@ public class Server{
 //        job = new JobSchedule(task);
         System.out.println("Server generate text file...");
         ArrayList<String> task = new ArrayList();
-        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 100000);
+        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 256);
         MergeSort.CreateJobFromFile(Const._PathFileJob, task);
         System.out.println("do job schedule");
         job = new JobSchedule(task);

@@ -31,11 +31,11 @@ public class JobSchedule {
     
     private void doJobSchedule(){
         int start, end, size = jobs.size(),range = size/128;
-        for(int i=0;i<128;i++){
+        for(int i=0;i<=128;i++){
             start = i*range; 
             end = (start + range)-1;
             if(end>size-1){
-                end = (size-1)-end;
+                end = (size-1);
             }
             System.out.println(start+" "+end);
             unSortTask.add(new Task(i, new ArrayList<String>(jobs.subList(start, end))));

@@ -45,6 +45,10 @@ public class Task implements Serializable{
         return data1;
     }
     
+    public void setData1(ArrayList<String> data){
+        this.data1 = data;
+    }
+    
     public ArrayList<String> getData2(){
         return data2;
     }
@@ -55,9 +59,6 @@ public class Task implements Serializable{
         System.gc();
     }
     
-    public void setData1(ArrayList<String> data){
-        this.data1=data;
-    }
     
     public void setData2(ArrayList<String> data){
         data2 = data;
