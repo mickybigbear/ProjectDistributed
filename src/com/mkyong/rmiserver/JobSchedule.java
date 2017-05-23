@@ -41,13 +41,12 @@ public class JobSchedule {
             unSortTask.add(new Task(i, new ArrayList<String>(jobs.subList(start, end))));
         }
     }
-
     
-    public Task searchSendTask(int id){
+    public Task deleteSendTask(int id){
         Task t;
         for(int i=0;i<=sendTask.size()-1;i++){
-            if( (t = sendTask.get(id)).getId() == id){
-                return t;
+            if( (t = sendTask.get(i)).getId() == id){
+                return sendTask.remove(i);
             }
         }
         return null;
