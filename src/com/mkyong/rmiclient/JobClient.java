@@ -90,7 +90,7 @@ public class JobClient extends Thread{
     
     public Task reqJob() {
         try {
-            return getService().getTask();
+            return getService().getTask(Const._MY_ID);
         } catch (RemoteException ex) {
             Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
         }

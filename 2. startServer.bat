@@ -1,3 +1,4 @@
 cd src
 start rmiregistry
-java com.mkyong.rmiserver.Server
+java -Xmx7g com.mkyong.rmiserver.Server
+pause

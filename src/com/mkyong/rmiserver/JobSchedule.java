@@ -38,7 +38,6 @@ public class JobSchedule {
             if(end>size-1){
                 end = (size-1);
             }
-            System.out.println(start+" "+end); 
             temp = new ArrayList<String>(jobs.subList(start, end));
             unSortTask.add(new Task(i, temp));
         }

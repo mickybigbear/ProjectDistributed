@@ -25,7 +25,6 @@ import com.mkyong.rmiinterface.RMIJobService;
  */
 public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobService{
     
-    private static Task task;
     private ArrayList<Task> taskList = new ArrayList();
     private static LinkedBlockingQueue<Task> taskqueue = new LinkedBlockingQueue<Task>();
     private static LinkedList<Task> sortedtask = new LinkedList<Task>();
@@ -44,22 +43,26 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
     }
     
     @Override
-    public Task getTask() throws RemoteException {
+    public Task getTask(int idClient) throws RemoteException {
         Task task1,task2;
         task1 = jobSchedule.unSortTask.poll();
         if((task1)!=null){
+            task1.setIDClient(idClient);
             jobSchedule.sendTask.add(task1);
-            System.out.println("send taskUnSort id: "+task1.getId()+" size "+task1.getData1().size());
+            System.out.println("\tsend taskUnSort id: "+task1.getId()+" size "
+                        +task1.getData1().size()+" to client ");
             return task1;
         }
         else if((task1 = jobSchedule.sortTask.poll())!=null){
+            task1.setIDClient(idClient);
             if(task1.getData2()!=null){ return task1; }
             else if((task2 = jobSchedule.sortTask.poll())==null){
                 return null;
             }else{
                 jobSchedule.sendTask.add(task1);
                 task1.joinTask(task2);
-                System.out.println("send taskSort id: "+task1.getId()+" size "+task1.getData1().size());
+                System.out.println("\tsend taskSort id: "+task1.getId()+" size "
+                        +task1.getData1().size()+" to client "+task1.getIDClient());
                 return task1;
             }
         }
@@ -68,10 +71,11 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
 
     @Override
     public void sendResult(Task task) throws RemoteException {
-        System.out.print("resive task id: "+task.getId()+" size "+task.getData1().size()+"\n");
-        System.out.println("\t\t 1  Unsort task : "+jobSchedule.unSortTask.size()+
-                "   sort task : "+jobSchedule.sortTask.size()+
-                "   send task : "+jobSchedule.sendTask.size());
+        System.out.println("resive task id: "+task.getId()+
+                " size "+task.getData1().size()+" from "+task.getIDClient());
+//        System.out.println("\t\t 1  Unsort task : "+jobSchedule.unSortTask.size()+
+//                "   sort task : "+jobSchedule.sortTask.size()+
+//                "   send task : "+jobSchedule.sendTask.size());
         if(task.isEmpty()){
             return;
         }

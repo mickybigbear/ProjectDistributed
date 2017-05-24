@@ -193,7 +193,7 @@ public class  MergeSort {
         } 
     }
     
-    private static String getRandomString(int len){
+    public static String getRandomString(int len){
         StringBuilder sb = new StringBuilder( len );
         for( int i = 0; i < len; i++ ){
             sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );

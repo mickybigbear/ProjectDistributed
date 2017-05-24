@@ -37,8 +37,8 @@ public class Client {
 	}
         
         private static void getJob(ArrayList list){
-            MergeSort.genTextFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", "UTF-8", 10, 1000);
-            MergeSort.CreateJobFromFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", list);
+            //MergeSort.genTextFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", "UTF-8", 10, 1000);
+            //MergeSort.CreateJobFromFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", list);
         }
         
         public static Task askTask() throws MalformedURLException, RemoteException, NotBoundException {
@@ -46,7 +46,7 @@ public class Client {
             Task task = null;
             while(befree){
                 try {
-                    task=look_up.getTask();
+                    task=look_up.getTask(Const._MY_ID);
                 }
                 catch(ConnectException e) {
                     try {

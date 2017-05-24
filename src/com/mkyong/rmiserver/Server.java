@@ -28,12 +28,18 @@ public class Server{
     
     public static void testMergeSort(){
 
-        System.out.println("Server generate text file...");
+        System.out.println("Server generate text file....");
         ArrayList<String> task = new ArrayList();
-        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 1048576); // 2^10
-        MergeSort.CreateJobFromFile(Const._PathFileJob, task);
+        //MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 1000000); // 2^10
+        System.out.println("Server load file to memory...");
+        //MergeSort.CreateJobFromFile(Const._PathFileJob, task);
         System.out.println("do job schedule");
+        for(int i=0;i<1000000;i++){
+            task.add(MergeSort.getRandomString(10));
+            
+        }
         job = new JobSchedule(task);
+        System.out.println("task size "+task.size());
     }
 
     
