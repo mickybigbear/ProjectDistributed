@@ -27,13 +27,10 @@ public class Server{
     }
     
     public static void testMergeSort(){
-//        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 10000);
-//        ArrayList<String> task = new ArrayList();
-//        MergeSort.CreateJobFromFile(Const._PathFileJob, task);
-//        job = new JobSchedule(task);
+
         System.out.println("Server generate text file...");
         ArrayList<String> task = new ArrayList();
-        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 256);
+        MergeSort.genTextFile(Const._PathFileJob, Const._Charset, 10, 1048576); // 2^10
         MergeSort.CreateJobFromFile(Const._PathFileJob, task);
         System.out.println("do job schedule");
         job = new JobSchedule(task);

@@ -61,7 +61,7 @@ public class  MergeSort {
         }
     
     public static void DoMergeSort(ArrayList<String> list, int low, int high){
-        List<String> target= list.subList(low, high);
+        List<String> target= list.subList(low, high+1);
         Collections.sort(list);
     }
     
@@ -87,21 +87,26 @@ public class  MergeSort {
     }
     
     public static ArrayList<String> DoMerge(ArrayList<String> listL, ArrayList<String> listR) {
-        int statL = 0;
+        int startL = 0;
         int endL = listL.size()-1;
         int startR = 0;
         int endR = listR.size()-1;
+        String sL, sR;
         ArrayList<String> result = new ArrayList();
-        while(statL<=endL && startR<= endR){
-            if(listL.get(statL).compareTo(listR.get(startR)) <= 0){
-                result.add(listL.get(statL++));
+        while(startL<=endL && startR<= endR){
+            sL = listL.get(startL);
+            sR = listR.get(startR);
+            if(sL.compareTo(sR) <= 0){
+                result.add(sL);
+                startL++;
             }
-            else{
-                result.add(listR.get(startR++));
-            }
+            else{ 
+                result.add(sR);
+                startR++;
+            } 
         }
-        while(statL<=endL){
-            result.add(listL.get(statL++));
+        while(startL<=endL){
+            result.add(listL.get(startL++));
         }
         while(startR<=endR){
             result.add(listR.get(startR++));

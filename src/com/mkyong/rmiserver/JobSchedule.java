@@ -31,14 +31,16 @@ public class JobSchedule {
     
     private void doJobSchedule(){
         int start, end, size = jobs.size(),range = size/128;
-        for(int i=0;i<=128;i++){
+        ArrayList<String> temp;
+        for(int i=0;i<=127;i++){
             start = i*range; 
-            end = (start + range)-1;
+            end = (start + range);
             if(end>size-1){
                 end = (size-1);
             }
-            System.out.println(start+" "+end);
-            unSortTask.add(new Task(i, new ArrayList<String>(jobs.subList(start, end))));
+            System.out.println(start+" "+end); 
+            temp = new ArrayList<String>(jobs.subList(start, end));
+            unSortTask.add(new Task(i, temp));
         }
     }
     

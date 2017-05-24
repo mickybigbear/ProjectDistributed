@@ -49,7 +49,7 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
         task1 = jobSchedule.unSortTask.poll();
         if((task1)!=null){
             jobSchedule.sendTask.add(task1);
-            System.out.println("send task1 : "+jobSchedule.sendTask.size());
+            System.out.println("send taskUnSort id: "+task1.getId()+" size "+task1.getData1().size());
             return task1;
         }
         else if((task1 = jobSchedule.sortTask.poll())!=null){
@@ -59,8 +59,7 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
             }else{
                 jobSchedule.sendTask.add(task1);
                 task1.joinTask(task2);
-                //System.out.println("send task2 : "+jobSchedule.sendTask.size());
-                System.out.println("task2 size "+task2.getData1().size());
+                System.out.println("send taskSort id: "+task1.getId()+" size "+task1.getData1().size());
                 return task1;
             }
         }
@@ -69,20 +68,19 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
 
     @Override
     public void sendResult(Task task) throws RemoteException {
+        System.out.print("resive task id: "+task.getId()+" size "+task.getData1().size()+"\n");
+        System.out.println("\t\t 1  Unsort task : "+jobSchedule.unSortTask.size()+
+                "   sort task : "+jobSchedule.sortTask.size()+
+                "   send task : "+jobSchedule.sendTask.size());
         if(task.isEmpty()){
             return;
         }
         task.setHaveHolder(false);
         task.setStatus(true);
         jobSchedule.sortTask.add(task);
-        System.out.print("resive task id: "+task.getId()+" size"+task.getData1().size()+"\n");
         if(jobSchedule.deleteSendTask(task.getId())==null){
-            //System.out.println("task "+task.getId()+" not in sendTask");
+            System.out.println("task "+task.getId()+" not in sendTask");
         }
-               
-        System.out.println("Unsort task : "+jobSchedule.unSortTask.size()+
-                "   sort task : "+jobSchedule.sortTask.size()+
-                "   send task : "+jobSchedule.sendTask.size());
         if(jobSchedule.unSortTask.size()==0 && jobSchedule.sortTask.size()==1 && jobSchedule.sendTask.size()==0){
             System.out.println("finish");
             MergeSort.createFileResult(Const._PathFileResult, Const._Charset, jobSchedule.sortTask.get(0).getData1());

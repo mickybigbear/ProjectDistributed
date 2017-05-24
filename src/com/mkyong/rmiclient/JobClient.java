@@ -50,7 +50,7 @@ public class JobClient extends Thread{
     public void clientStartJob(Task task){
         ArrayList<String> data_1 = task.getData1();
         ArrayList<String> data_2 = task.getData2();
-        if(data_1.size()<2){
+        if(data_1.size()<2 && data_2==null){
             task.setStatus(true);
             return;
         }
@@ -61,15 +61,12 @@ public class JobClient extends Thread{
         }
         else{
             int end = data_1.size()-1;
-            int middle = end/2;
-            ArrayList<String> left = new ArrayList(data_1.subList(0, middle));
-            ArrayList<String> right = new ArrayList(data_1.subList(middle+1, end));
-            long tStart, tEnd;
-            double elapsedSeconds;
-            tStart = System.currentTimeMillis();
+            int middle = (end/2);
+            ArrayList<String> left = new ArrayList(data_1.subList(0, middle+1));
+            ArrayList<String> right = new ArrayList(data_1.subList(middle+1, end+1));
             worker[0] = new Worker();
             worker[1] = new Worker();
-
+            int a = 3/2;
             worker[0].startJob(left, 0, left.size()-1);
             worker[1].startJob(right, 0, right.size()-1);
             try {
@@ -78,7 +75,7 @@ public class JobClient extends Thread{
             } catch (InterruptedException ex) {
                 Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
             }
-            data_1 = MergeSort.DoMerge(left, right);
+            task.setData1(MergeSort.DoMerge(left, right));
             task.setStatus(true);
         }
     }

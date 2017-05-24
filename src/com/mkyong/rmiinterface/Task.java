@@ -76,6 +76,7 @@ public class Task implements Serializable{
         if(data1!=null && data1.size()>0){
             return false;
         }
+        System.out.print("");
         return true;
     }
     
