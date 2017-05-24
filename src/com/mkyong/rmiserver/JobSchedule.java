@@ -34,13 +34,17 @@ public class JobSchedule {
         ArrayList<String> temp;
         for(int i=0;i<=127;i++){
             start = i*range; 
-            end = (start + range);
-            if(end>size-1){
+            end = (i+1)*range-1;
+            if(i==127){
                 end = (size-1);
             }
-            temp = new ArrayList<String>(jobs.subList(start, end));
+            System.out.println("task id "+i+" data from "+start+" to "+end);
+            System.out.println("range = "+(end-start+1)+" "+(range));
+            temp = new ArrayList<String>(jobs.subList(start, end+1));
             unSortTask.add(new Task(i, temp));
         }
+        jobs = null;
+        System.gc();
     }
     
     public Task deleteSendTask(int id){

@@ -4,6 +4,7 @@ import java.rmi.Naming;
 import com.mkyong.rmiinterface.Const;
 import com.mkyong.rmiinterface.MergeSort;
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class Server{
@@ -35,8 +36,9 @@ public class Server{
         //MergeSort.CreateJobFromFile(Const._PathFileJob, task);
         System.out.println("do job schedule");
         for(int i=0;i<1000000;i++){
-            task.add(MergeSort.getRandomString(10));
-            
+            task.add(MergeSort.getRandomString(6)); // big memory use
+           //task.add(UUID.randomUUID().toString()); // huge of memory use
+           //task.add("abcdefgjsdfsdfsdfs"); // very less memmory use
         }
         job = new JobSchedule(task);
         System.out.println("task size "+task.size());
