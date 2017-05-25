@@ -30,12 +30,12 @@ public class JobSchedule {
     }
     
     private void doJobSchedule(){
-        int start, end, size = jobs.size(),range = size/128;
+        int start, end, size = jobs.size(),range = size/8;
         ArrayList<String> temp;
-        for(int i=0;i<=127;i++){
+        for(int i=0;i<=7;i++){
             start = i*range; 
             end = (i+1)*range-1;
-            if(i==127){
+            if(i==7){
                 end = (size-1);
             }
             System.out.println("task id "+i+" data from "+start+" to "+end);
@@ -48,9 +48,8 @@ public class JobSchedule {
     }
     
     public Task deleteSendTask(int id){
-        Task t;
-        for(int i=0;i<=sendTask.size()-1;i++){
-            if( (t = sendTask.get(i)).getId() == id){
+        for(int i=0;i<sendTask.size();i++){
+            if( sendTask.get(i).getId() == id){
                 return sendTask.remove(i);
             }
         }

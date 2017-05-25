@@ -25,26 +25,36 @@ public class JobClient extends Thread{
     private Task task;
     private Worker[] worker = new Worker[2];
     private static RMIJobService look_up;
-    private boolean exit = true;
+    private boolean stop = true, exit = false;
+    private MainUI ui;
     
     @Override
     public void run(){
         while(!exit){
-            task = reqJob();
-            if(task==null){
-                waitForJob(1000);
-                continue;
+            while(!stop){
+                ui.setTextStatClient(Const._TXT_REQUEST_JOB);
+                task = reqJob();
+                if(task==null){
+                    ui.setTextStatClient(Const._TXT_WaitForJob);
+                    waitForJob(1000);
+                    continue;
+                }
+                ui.setTextStatClient(Const._TXT_IN_PROCESS_MS);
+                ui.setTextData1Size(String.valueOf(task.getData1().size()));
+                if(task.getData2()!=null){ui.setTextData2Size(String.valueOf(task.getData2().size()));}
+                clientStartJob(task);
+                ui.setTextStatClient(Const._TXT_SEND_RESULT);
+                sendResult(task);   
             }
-            clientStartJob(task);
-            sendResult(task);
+            waitForJob(2000);
         }
     }
     
     
-    public JobClient(){
+    public JobClient(MainUI ui){
         worker[0] = new Worker();
         worker[1] = new Worker();
-        getService();
+        this.ui = ui;
     }
     
     public void clientStartJob(Task task){
@@ -93,6 +103,7 @@ public class JobClient extends Thread{
             return getService().getTask(Const._MY_ID);
         } catch (RemoteException ex) {
             Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return null;
     }
@@ -108,25 +119,28 @@ public class JobClient extends Thread{
     private RMIJobService getService(){
         if(look_up ==null){
             try {
+                ui.setTextConnStatus(Const._TXT_Connecting);
                 look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
+                ui.setTextConnStatus(Const._TXT_Connected);
             } catch (NotBoundException ex) {
                 Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MalformedURLException ex) {
                 Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
             } catch (RemoteException ex) {
                 Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } 
         }
         return look_up;
     }
     
     public void startClient(){
         this.start();
-        exit = false;
+        stop = false;
     }
+   
     
-    public void exit(){
-        exit = true;
+    public void stopClient(){
+        stop = true;
     }
     
 }
