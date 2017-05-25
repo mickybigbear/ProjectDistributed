@@ -51,17 +51,6 @@ public class Client {
 //               }
                 //Check the SystemTray is supported
         
-        exitItem.addActionListener(new ActionListener(){
-                @Override
-                System.exit(0);             
-            }
-        });
-       
-        popup.add(exitItem);
-       
-        trayIcon.setPopupMenu(popup);
-       
-        tray.add(trayIcon);
 	}
         
         private static void getJob(ArrayList list){
