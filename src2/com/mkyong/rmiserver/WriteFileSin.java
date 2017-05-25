@@ -111,14 +111,16 @@ public class WriteFileSin implements Runnable {
             while (line != null) {
                 File newFile = new File(file.getParent(), name + "." + String.format("%03d", counter++));
                 try (OutputStream out = new BufferedOutputStream(new FileOutputStream(newFile))) {
-                    println(String.valueOf(sizeRemain));
                     int fileSize = 0;
                     while (line != null) {
                         byte[] bytes = (line + eof).getBytes(Charset.defaultCharset());
                         if (fileSize + bytes.length > sizeOfChunk) {
                             sizeRemain = sizeRemain-fileSize;
+                            println(String.valueOf("size remain =" +sizeRemain));
+                            println(String.valueOf("size mod ="+remain));
+                            println(String.valueOf(fileSize));
                             if(sizeRemain==remain){
-
+                                println("last part");
                             }
                             else{
                                 break;
