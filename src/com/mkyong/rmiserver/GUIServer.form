@@ -28,6 +28,8 @@
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="_btnStartTask" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                      <Component id="_btnExit" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="_btnEndTask" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -50,7 +52,7 @@
                       <Component id="_btnOpenFileLocation" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="20" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -74,6 +76,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="_btnEndTask" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="_btnStartTask" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="_btnExit" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="27" max="32767" attributes="0"/>
           </Group>
@@ -133,10 +136,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="_lblRemainWork">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="String remainWork = &quot;&quot;;&#xa;//if(JobSchedule.unSortTask.size()!=0){&#xa;//    remainWork = String.valueOf(JobSchedule.unSortTask.size());&#xa;//}">
           <Font name="Tahoma" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="remainWork" type="code"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -172,6 +177,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="End Task"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="_btnExit">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Exit"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_btnExitActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -20,7 +20,7 @@ public class JobSchedule {
     public LinkedList<Task> unSortTask;
     public LinkedList<Task> sortTask;
     public LinkedList<Task> sendTask;
-    
+    public LinkedList<Task> unSortTask2;
     public JobSchedule(ArrayList<String> jobs){
        this.jobs = jobs;
        unSortTask = new LinkedList();
@@ -29,8 +29,10 @@ public class JobSchedule {
        doJobSchedule();
     }
     
+    
     private void doJobSchedule(){
         int start, end, size = jobs.size(),range = size/8;
+        System.out.println(unSortTask.size());
         ArrayList<String> temp;
         for(int i=0;i<=7;i++){
             start = i*range; 

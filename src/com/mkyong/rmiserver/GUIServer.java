@@ -37,6 +37,7 @@ public class GUIServer extends javax.swing.JFrame {
         _btnStartTask = new javax.swing.JButton();
         _btnOpenFileLocation = new javax.swing.JButton();
         _btnEndTask = new javax.swing.JButton();
+        _btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,7 +70,11 @@ public class GUIServer extends javax.swing.JFrame {
         jLabel1.setText("Total Remaining Work");
 
         _lblRemainWork.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        _lblRemainWork.setText("0");
+        String remainWork = "";
+        //if(JobSchedule.unSortTask.size()!=0){
+            //    remainWork = String.valueOf(JobSchedule.unSortTask.size());
+            //}
+        _lblRemainWork.setText(remainWork);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Work Status");
@@ -88,6 +93,13 @@ public class GUIServer extends javax.swing.JFrame {
 
         _btnEndTask.setText("End Task");
 
+        _btnExit.setText("Exit");
+        _btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _btnExitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,6 +109,8 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(_btnStartTask)
+                        .addGap(41, 41, 41)
+                        .addComponent(_btnExit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(_btnEndTask))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -113,7 +127,7 @@ public class GUIServer extends javax.swing.JFrame {
                                 .addGap(11, 11, 11)))
                         .addGap(18, 18, 18)
                         .addComponent(_btnOpenFileLocation)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +146,8 @@ public class GUIServer extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_btnEndTask)
-                    .addComponent(_btnStartTask))
+                    .addComponent(_btnStartTask)
+                    .addComponent(_btnExit))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -140,10 +155,19 @@ public class GUIServer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void _btnStartTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btnStartTaskActionPerformed
-        Server.testMergeSort();
-        Server.init();
+        new Thread()
+        {
+            public void run() {
+                Server.testMergeSort();
+                Server.init();
+            }
+        }.start();
         // TODO add your handling code here:
     }//GEN-LAST:event__btnStartTaskActionPerformed
+
+    private void _btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btnExitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event__btnExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,6 +178,7 @@ public class GUIServer extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -171,17 +196,22 @@ public class GUIServer extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GUIServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+//        JobSchedule jobS = new JobSchedule();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+//                String a;
+//                a = String.valueOf(JobSchedule.unSortTask2.size());
+                
                 new GUIServer().setVisible(true);
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton _btnEndTask;
+    private javax.swing.JButton _btnExit;
     private javax.swing.JButton _btnOpenFileLocation;
     private javax.swing.JButton _btnStartTask;
     private javax.swing.JLabel _lblRemainWork;
