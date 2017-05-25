@@ -27,7 +27,6 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
     
     private ArrayList<Task> taskList = new ArrayList();
     private static LinkedBlockingQueue<Task> taskqueue = new LinkedBlockingQueue<Task>();
-    private static LinkedList<Task> sortedtask = new LinkedList<Task>();
     private static TimeOutChecker toc = new TimeOutChecker();
     private static Thread t = null;
     private JobSchedule jobSchedule;
@@ -35,11 +34,12 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
     protected RMIJobServiceImp(JobSchedule jobSchedule) throws RemoteException{
         super();
         this.jobSchedule = jobSchedule;
-//        toc.setSortedTask(sortedtask);
-//        toc.setTaskQueue(taskqueue);
-//        t=new Thread(toc);
-//        t.setPriority(1);
-//        t.start();
+        toc.setSortedTask(jobSchedule.sortTask);
+        toc.setTaskQueue(jobSchedule.unSortTask);
+        toc.setSendTask(jobSchedule.sendTask);
+        t=new Thread(toc);
+        t.setPriority(1);
+        t.start();
     }
     
     
@@ -128,7 +128,6 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
         task.setStatus(true);
         if(jobSchedule.deleteSendTask(task.getId())!=null){
             jobSchedule.sortTask.add(task);
-            
         }else{
             System.out.println("task "+task.getId()+" not in sendTask");
         }
@@ -137,6 +136,7 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
     private Task prepareSendTask(Task task, int idClient){
         task.setHaveHolder(true);
         // task set time stamp
+        task.genTimeStamp();
         jobSchedule.sendTask.add(task);
         task.setIDClient(idClient);
         System.out.println("Send task id "+task.getId()+" size "+task.getData1().size()+" to client id "+task.getIDClient());
