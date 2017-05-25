@@ -42,9 +42,10 @@ public class Bookstore extends UnicastRemoteObject implements RMIInterface {
             Naming.rebind("//localhost/MyBookstore", new Bookstore(initializeList()));
             System.err.println("Server ready sss");
             System.out.println("generating file");
-//            MergeSort.genTextFile("C:\\xampp2\\text2.txt","UTF-8",5,100000);
+//            MergeSort.genTextFile("C:\\xampp2\\text2.txt","UTF-8",5,7500000);
             System.out.println("read to array");
-            MergeSort.CreateJobFromFile2(new java.io.File("C:\\xampp2\\text2.txt"),100,dataList);
+            MergeSort.CreateJobFromFile3(new java.io.File("C:\\xampp2\\text2.txt"),10);
+
         } catch (Exception e) {
             System.err.println("Server exception: " + e.getMessage());
         }

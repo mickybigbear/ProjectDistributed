@@ -24,7 +24,7 @@ public class Client {
 //                    //askTask();
 //                }
              JobClient client = new JobClient();
-             client.startClient();
+//             client.startClient();
         
 //               while(true){
 //                   try {
@@ -37,8 +37,8 @@ public class Client {
 	}
         
         private static void getJob(ArrayList list){
-            MergeSort.genTextFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", "UTF-8", 10, 1000);
-            MergeSort.CreateJobFromFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", list);
+            MergeSort.genTextFile("D:/DS2/Target.txt", "UTF-8", 10, 1000);
+            MergeSort.CreateJobFromFile("D:\\DS2\\Target.txt", list);
         }
         
         public static Task askTask() throws MalformedURLException, RemoteException, NotBoundException {
