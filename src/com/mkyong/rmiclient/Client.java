@@ -37,7 +37,6 @@ public class Client {
 	}
         
         private static void getJob(ArrayList list){
-
             //MergeSort.genTextFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", "UTF-8", 10, 1000);
             //MergeSort.CreateJobFromFile("C:/Users/Micky/Documents/NetBeansProjects/ProjectMergeSort/test/Target.txt", list);
         }
