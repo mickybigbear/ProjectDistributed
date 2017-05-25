@@ -48,9 +48,8 @@ public class JobSchedule {
     }
     
     public Task deleteSendTask(int id){
-        Task t;
-        for(int i=0;i<=sendTask.size()-1;i++){
-            if( (t = sendTask.get(i)).getId() == id){
+        for(int i=0;i<sendTask.size();i++){
+            if( sendTask.get(i).getId() == id){
                 return sendTask.remove(i);
             }
         }
