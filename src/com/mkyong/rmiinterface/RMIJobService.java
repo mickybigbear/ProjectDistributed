@@ -13,7 +13,6 @@ import java.rmi.RemoteException;
  * @author Micky
  */
 public interface RMIJobService extends Remote {
-    
     public Task getTask(int idClient) throws RemoteException;
     public void sendResult(Task t) throws RemoteException;
 }

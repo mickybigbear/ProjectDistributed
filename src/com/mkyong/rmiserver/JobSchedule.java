@@ -30,12 +30,12 @@ public class JobSchedule {
     }
     
     private void doJobSchedule(){
-        int start, end, size = jobs.size(),range = size/128;
+        int start, end, size = jobs.size(),range = size/8;
         ArrayList<String> temp;
-        for(int i=0;i<=127;i++){
+        for(int i=0;i<=7;i++){
             start = i*range; 
             end = (i+1)*range-1;
-            if(i==127){
+            if(i==7){
                 end = (size-1);
             }
             System.out.println("task id "+i+" data from "+start+" to "+end);

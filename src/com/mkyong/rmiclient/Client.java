@@ -23,8 +23,8 @@ public class Client {
 //                while(true){
 //                    //askTask();
 //                }
-             JobClient client = new JobClient();
-             client.startClient();
+            
+            
         
 //               while(true){
 //                   try {
