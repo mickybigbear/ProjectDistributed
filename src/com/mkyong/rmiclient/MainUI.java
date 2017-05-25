@@ -22,7 +22,7 @@ public class MainUI extends javax.swing.JFrame {
         this._text_server_ip.setText(Const._IP_Server);
         this._text_conn_stat.setText(Const._TXT_NotConnect);
         this._text_status_client.setText(Const._TXT_WaitForJob);
-        
+        this._btn_stop.setEnabled(false);
     }
 
     /**
@@ -163,10 +163,14 @@ public class MainUI extends javax.swing.JFrame {
 
     private void _btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_startActionPerformed
         client.startClient();
+        this._btn_start.setEnabled(!this._btn_start.isEnabled());
+        this._btn_stop.setEnabled(!this._btn_stop.isEnabled());
     }//GEN-LAST:event__btn_startActionPerformed
 
     private void _btn_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_stopActionPerformed
         client.stopClient();
+        this._btn_stop.setEnabled(!this._btn_stop.isEnabled());
+        this._btn_start.setEnabled(!this._btn_start.isEnabled());
     }//GEN-LAST:event__btn_stopActionPerformed
     
     public void setTextStatClient(String s){

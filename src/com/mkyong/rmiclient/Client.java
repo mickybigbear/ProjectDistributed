@@ -33,26 +33,7 @@ public class Client {
         private static TrayIcon trayIcon;
         private static final SystemTray tray = SystemTray.getSystemTray();
                 
-	public static void main(String[] args) throws AWTException /*throws NotBoundException, MalformedURLException, RemoteException*/  {
-                //look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
-//                while(true){
-//                    //askTask();
-//                }
-
-            
-            
-
-//             client.startClient();
-
-        
-//               while(true){
-//                   try {
-//                       Thread.sleep(5000);
-//                   } catch (InterruptedException ex) {
-//                       Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-//                   }
-//               }
-                //Check the SystemTray is supported
+	public static void main(String[] args) throws AWTException{
         if (!SystemTray.isSupported()) {
             System.out.println("SystemTray is not supported");
             return;

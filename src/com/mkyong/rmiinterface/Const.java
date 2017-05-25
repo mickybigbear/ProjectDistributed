@@ -22,7 +22,7 @@ public class Const {
     public static final String _Charset ="UTF-8";
     
     
-    // gui txt
+    // gui txt 
     public static final String _TXT_Connecting = "Connecting..";
     public static final String _TXT_NotConnect = "Not connect ";
     public static final String _TXT_Connected = "Connected";
@@ -31,4 +31,6 @@ public class Const {
     public static final String _TXT_REQUEST_JOB = "Request job";
     public static final String _TXT_IN_PROCESS_MS= "In process merge sort";
     public static final String _TXT_SEND_RESULT= "Send result..";
+    
+    
 }
