@@ -31,7 +31,7 @@ public class TimeOutChecker implements Runnable {
             for(int i=0;i<sendTask.size();i++){
                 task = sendTask.get(i);
                 diffTime=(System.currentTimeMillis())-(task.getTimeStamp().getTime());
-                if((diffTime>100)&&(task.getHaveHolder())){
+                if((diffTime>1000*60*1)&&(task.getHaveHolder())){
                     System.out.println("timeout"+sendTask.get(i).getId());
                     if(task.isSort()){
                         sortTask.add(sendTask.remove(i));
