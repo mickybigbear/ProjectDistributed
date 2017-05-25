@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
 import com.mkyong.rmiinterface.RMIJobService;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JTable;
 
 /**
  *
@@ -30,16 +33,22 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
     private static TimeOutChecker toc = new TimeOutChecker();
     private static Thread t = null;
     private JobSchedule jobSchedule;
+    private GUIServer guiServer;
+   
+    //private GUIServer uiServer;
     
-    protected RMIJobServiceImp(JobSchedule jobSchedule) throws RemoteException{
+    protected RMIJobServiceImp(JobSchedule jobSchedule, GUIServer guiServer) throws RemoteException{
         super();
         this.jobSchedule = jobSchedule;
+        //this.uiServer = uiServer;
         toc.setSortedTask(jobSchedule.sortTask);
         toc.setTaskQueue(jobSchedule.unSortTask);
         toc.setSendTask(jobSchedule.sendTask);
         t=new Thread(toc);
         t.setPriority(1);
         t.start();
+        this.guiServer = guiServer;
+        regisListner();
     }
     
     @Override
@@ -79,6 +88,7 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
         task.setStatus(true);
         if(jobSchedule.deleteSendTask(task.getId())!=null){
             jobSchedule.sortTask.add(task);
+            guiServer.removeInforTask(task.getId());
         }else{
             System.out.println("task "+task.getId()+" not in sendTask");
         }
@@ -88,6 +98,7 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
         task.setHaveHolder(true);
         task.genTimeStamp();
         jobSchedule.sendTask.add(task);
+        guiServer.addInforTask(task);
         task.setIDClient(idClient);
         System.out.println("Send task id "+task.getId()+" size "+task.getData1().size()+" to client id "+task.getIDClient());
         return task;
@@ -103,6 +114,23 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
         return false;
     }
     
-   
+    private void regisListner(){
+        guiServer.getBtnEndTask().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable table = guiServer.getTaskTable();
+                int a = table.getSelectedRow();
+                if(a>=0){
+                    int idTask = (int)table.getValueAt(a, 1);
+                    Task task = jobSchedule.deleteSendTask(idTask);
+                    if(task!=null){
+                        if(task.isSort()){jobSchedule.sortTask.add(task);}
+                        else{jobSchedule.unSortTask.add(task);}
+                        guiServer.removeInforTask(idTask);
+                    }
+                }
+            }
+        });
+    }
   
 }

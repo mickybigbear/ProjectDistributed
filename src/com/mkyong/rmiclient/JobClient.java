@@ -98,14 +98,17 @@ public class JobClient extends Thread{
     
     public Task reqJob() {
         try {
+            ui.setText_txtClientStatus(Const._TXT_REQUEST_JOB);
             ui.setText_txtConnectStatus(Const._TXT_Connected);
             return getService().getTask(Const._MY_ID);
         } catch (RemoteException ex) {
            // Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
            System.out.println("Cannot connect server");
            ui.setText_txtConnectStatus(Const._TXT_CanNotConnect);
-            look_up =null;
+           look_up =null;
             
+        } catch(NullPointerException ex){
+            ui.setText_txtConnectStatus(Const._TXT_CanNotConnect);
         }
         return null;
     }
@@ -148,7 +151,8 @@ public class JobClient extends Thread{
     
    
     
-    public void stopClient(){
+    public void pauseClient(){
+        ui.setText_txtConnectStatus(Const._TXT_NotConnect);
         stop = true;
     }
     

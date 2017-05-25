@@ -189,7 +189,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="_btn_disconnect">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Disconnect"/>
+        <Property name="text" type="java.lang.String" value="Pause"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_btn_disconnectActionPerformed"/>

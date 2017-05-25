@@ -32,6 +32,7 @@ public class Const {
     public static final String _TXT_IN_PROCESS_MS= "In process merge sort";
     public static final String _TXT_SEND_RESULT= "Send result..";
     public static final String _TXT_Finsih = "Finish";
+    public static final String _TXT_SENDED = "Sended";
     
     
     

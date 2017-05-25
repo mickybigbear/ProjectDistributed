@@ -3,11 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/falcon/Desktop/distproj/ProjectDistributed/src/com/mkyong/rmiclient/Client.java</file>
-            <file>file:/C:/Users/falcon/Desktop/distproj/ProjectDistributed/src/com/mkyong/rmiclient/MainUI.java</file>
-            <file>file:/C:/Users/falcon/Desktop/distproj/ProjectDistributed/src/com/mkyong/rmiserver/RMIJobServiceImp.java</file>
-            <file>file:/C:/Users/falcon/Desktop/distproj/ProjectDistributed/src/com/mkyong/rmiserver/Server.java</file>
-            <file>file:/C:/Users/falcon/Desktop/distproj/ProjectDistributed/src/com/mkyong/rmiserver/JobSchedule.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiclient/WindowClient.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiserver/RMIJobServiceImp.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiinterface/RMIInterface.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiinterface/RMIJobService.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiserver/TimeOutChecker.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiserver/Server.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiinterface/Const.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiserver/JobSchedule.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiclient/JobClient.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiinterface/MergeSort.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiinterface/Task.java</file>
+            <file>file:/C:/Users/Micky/Documents/NetBeansProjects/ProjectDistributed(New)/src/com/mkyong/rmiserver/GUIServer.java</file>
         </group>
     </open-files>
 </project-private>

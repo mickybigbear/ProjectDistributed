@@ -87,7 +87,7 @@ public class WindowClient extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(_tbl_task);
 
-        _btn_disconnect.setText("Disconnect");
+        _btn_disconnect.setText("Pause");
         _btn_disconnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 _btn_disconnectActionPerformed(evt);
@@ -188,7 +188,7 @@ public class WindowClient extends javax.swing.JFrame {
     private void _btn_disconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_disconnectActionPerformed
         this._btn_disconnect.setEnabled(!this._btn_disconnect.isEnabled());
         this._btn_connect.setEnabled(!this._btn_connect.isEnabled());
-        client.stopClient();
+        client.pauseClient();
     }//GEN-LAST:event__btn_disconnectActionPerformed
 
     private void _btn_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_connectActionPerformed
@@ -263,7 +263,6 @@ public class WindowClient extends javax.swing.JFrame {
                 WindowClient ui =  new WindowClient();
                 ui.setVisible(true);
                 client = new JobClient(ui);
-                
             }
         });
     }

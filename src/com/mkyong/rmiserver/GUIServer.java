@@ -5,18 +5,54 @@
  */
 package com.mkyong.rmiserver;
 
+import com.mkyong.rmiclient.JobClient;
+import com.mkyong.rmiclient.WindowClient;
+import com.mkyong.rmiinterface.Const;
+import com.mkyong.rmiinterface.Task;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
  * @author naki_
  */
 public class GUIServer extends javax.swing.JFrame {
-
+    
+    private static JobSchedule jobSchedule;
+    private static DefaultTableModel tableModel;
     /**
      * Creates new form GUIServer
      */
     public GUIServer() {
         initComponents();
+        this._btn_start.setEnabled(false);
+        this._btn_stop.setEnabled(false);
+    }
+    
+    public void init(JobSchedule jobSchedule){
+        this.jobSchedule = jobSchedule;
+        this._btn_start.setEnabled(true);
+        tableModel = (DefaultTableModel) this._tblClientTask.getModel();
+    }
+    
+    public void addInforTask(Task task){
+        Object[] infor = new Object[3];
+        infor[0] = task.getIDClient();
+        infor[1] = task.getId();
+        infor[2] = Const._TXT_SENDED;
+        tableModel.addRow(infor);
+    }
+    
+    public int removeInforTask(int idTask){
+        for(int i=0;i<tableModel.getRowCount();i++){
+            if((int)tableModel.getValueAt(i, 1) == idTask){
+                tableModel.removeRow(i);
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -34,27 +70,31 @@ public class GUIServer extends javax.swing.JFrame {
         _lblRemainWork = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         _lblWorkStatus = new javax.swing.JLabel();
-        _btnStartTask = new javax.swing.JButton();
+        _btn_start = new javax.swing.JButton();
         _btnOpenFileLocation = new javax.swing.JButton();
         _btnEndTask = new javax.swing.JButton();
-        _btnExit = new javax.swing.JButton();
+        _btn_stop = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         _tblClientTask.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Client ID", "Task ID", "status"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -82,10 +122,10 @@ public class GUIServer extends javax.swing.JFrame {
         _lblWorkStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         _lblWorkStatus.setText("Idle");
 
-        _btnStartTask.setText("Start");
-        _btnStartTask.addActionListener(new java.awt.event.ActionListener() {
+        _btn_start.setText("Start");
+        _btn_start.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                _btnStartTaskActionPerformed(evt);
+                _btn_startActionPerformed(evt);
             }
         });
 
@@ -93,10 +133,10 @@ public class GUIServer extends javax.swing.JFrame {
 
         _btnEndTask.setText("End Task");
 
-        _btnExit.setText("Exit");
-        _btnExit.addActionListener(new java.awt.event.ActionListener() {
+        _btn_stop.setText("Stop ");
+        _btn_stop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                _btnExitActionPerformed(evt);
+                _btn_stopActionPerformed(evt);
             }
         });
 
@@ -108,9 +148,9 @@ public class GUIServer extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(_btnStartTask)
+                        .addComponent(_btn_start)
                         .addGap(41, 41, 41)
-                        .addComponent(_btnExit)
+                        .addComponent(_btn_stop)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(_btnEndTask))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,29 +186,33 @@ public class GUIServer extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_btnEndTask)
-                    .addComponent(_btnStartTask)
-                    .addComponent(_btnExit))
+                    .addComponent(_btn_start)
+                    .addComponent(_btn_stop))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void _btnStartTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btnStartTaskActionPerformed
-        new Thread()
-        {
-            public void run() {
-                Server.testMergeSort();
-                Server.init();
-            }
-        }.start();
-        // TODO add your handling code here:
-    }//GEN-LAST:event__btnStartTaskActionPerformed
+    private void _btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_startActionPerformed
+       this._btn_start.setEnabled(false);
+       Server.regisService();
+       this._btn_stop.setEnabled(true);
+    }//GEN-LAST:event__btn_startActionPerformed
 
-    private void _btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btnExitActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event__btnExitActionPerformed
+    private void _btn_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_stopActionPerformed
+        this._btn_stop.setEnabled(false);
+        Server.unRegisService();
+        this._btn_start.setEnabled(true);
+    }//GEN-LAST:event__btn_stopActionPerformed
 
+    public JButton getBtnEndTask(){
+        return this._btnEndTask;
+    }
+    
+    public JTable getTaskTable(){
+        return this._tblClientTask;
+    }
     /**
      * @param args the command line arguments
      */
@@ -198,22 +242,14 @@ public class GUIServer extends javax.swing.JFrame {
         //</editor-fold>
 //        JobSchedule jobS = new JobSchedule();
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-//                String a;
-//                a = String.valueOf(JobSchedule.unSortTask2.size());
-                
-                new GUIServer().setVisible(true);
-            }
-        });
     }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton _btnEndTask;
-    private javax.swing.JButton _btnExit;
     private javax.swing.JButton _btnOpenFileLocation;
-    private javax.swing.JButton _btnStartTask;
+    private javax.swing.JButton _btn_start;
+    private javax.swing.JButton _btn_stop;
     private javax.swing.JLabel _lblRemainWork;
     private javax.swing.JLabel _lblWorkStatus;
     private javax.swing.JTable _tblClientTask;
