@@ -12,7 +12,7 @@ public class Task implements Serializable{
     private ArrayList<String> data1;
     private ArrayList<String> data2;
     private Timestamp timestamp = null;
-    
+    private int idClient=0;
 
     public Task(int id,ArrayList<String> data){
         this.id=id;
@@ -82,5 +82,13 @@ public class Task implements Serializable{
     
     public void joinTask(Task t2){
         this.data2 = t2.data1;
+    }
+    
+    public void setIDClient(int id){
+        this.idClient = id;
+    }
+    
+    public int getIDClient(){
+        return this.idClient;
     }
 }

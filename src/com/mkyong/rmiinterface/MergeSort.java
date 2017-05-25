@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,9 +36,8 @@ import java.util.logging.Logger;
  */
 public class  MergeSort {
     
-    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    static SecureRandom rnd = new SecureRandom();
-   
+    private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static SecureRandom rnd = new SecureRandom();
     
     public void oldMerge(ArrayList<String> list, int low, int middle, int high){
             int end_low = middle;
@@ -185,6 +185,7 @@ public class  MergeSort {
         try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
             for(long i=0;i<=num;i++){
                 writer.write((getRandomString(len)));
+                //writer.write("dkfkdkekdk");
                 writer.newLine();
             }
             writer.close();
@@ -193,7 +194,7 @@ public class  MergeSort {
         } 
     }
     
-    private static String getRandomString(int len){
+    public static String getRandomString(int len){
         StringBuilder sb = new StringBuilder( len );
         for( int i = 0; i < len; i++ ){
             sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
@@ -201,6 +202,13 @@ public class  MergeSort {
         }
         return sb.toString()+"\t";
     }
+    
+    
+
+        public static String nextSessionId() {
+            return new BigInteger(130, rnd).toString(32);
+        }
+    
 }
          
 
