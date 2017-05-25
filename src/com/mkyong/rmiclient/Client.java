@@ -39,7 +39,7 @@ public class Client {
 //                    //askTask();
 //                }
              JobClient client = new JobClient();
-             client.startClient();
+//             client.startClient();
         
 //               while(true){
 //                   try {

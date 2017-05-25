@@ -1,2 +1,8 @@
 /build/
 /dist/
+/.idea/
+RMIObjects.iml
+*.class
+bin/java.hprof.txt
+bin/java.hprof2.txt
+
