@@ -42,55 +42,6 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
         t.start();
     }
     
-    
-    public Task oldgetTask(int idClient){
-        Task task1,task2;
-        task1 = jobSchedule.unSortTask.poll();
-        if((task1)!=null){
-            task1.setIDClient(idClient);
-            jobSchedule.sendTask.add(task1);
-            System.out.println("\tsend taskUnSort id: "+task1.getId()+" size "
-                        +task1.getData1().size()+" to client ");
-            return task1;
-        }
-        else if((task1 = jobSchedule.sortTask.poll())!=null){
-            task1.setIDClient(idClient);
-            if(task1.getData2()!=null){ return task1; } // <-- not implement rare case
-            else if((task2 = jobSchedule.sortTask.poll())==null){
-                return null; //
-            }else{
-                jobSchedule.sendTask.add(task1);
-                task1.joinTask(task2);
-                System.out.println("\tsend taskSort id: "+task1.getId()+" size "
-                        +task1.getData1().size()+" to client "+task1.getIDClient());
-                return task1;
-            }
-        }
-        else {return null;}
-    }
-
-    
-    public void oldsendResult(Task task){
-        System.out.println("resive task id: "+task.getId()+
-                " size "+task.getData1().size()+" from "+task.getIDClient());
-//        System.out.println("\t\t 1  Unsort task : "+jobSchedule.unSortTask.size()+
-//                "   sort task : "+jobSchedule.sortTask.size()+
-//                "   send task : "+jobSchedule.sendTask.size());
-        if(task.isEmpty()){
-            return;
-        }
-        task.setHaveHolder(false);
-        task.setStatus(true);
-        jobSchedule.sortTask.add(task);
-        if(jobSchedule.deleteSendTask(task.getId())==null){
-            System.out.println("task "+task.getId()+" not in sendTask");
-        }
-        if(jobSchedule.unSortTask.size()==0 && jobSchedule.sortTask.size()==1 && jobSchedule.sendTask.size()==0){
-            System.out.println("finish");
-            MergeSort.createFileResult(Const._PathFileResult, Const._Charset, jobSchedule.sortTask.get(0).getData1());
-        }
-    }
-    
     @Override
     public Task getTask(int idClient) throws RemoteException{
         Task task1, task2;
@@ -135,7 +86,6 @@ public class RMIJobServiceImp extends UnicastRemoteObject implements RMIJobServi
     
     private Task prepareSendTask(Task task, int idClient){
         task.setHaveHolder(true);
-        // task set time stamp
         task.genTimeStamp();
         jobSchedule.sendTask.add(task);
         task.setIDClient(idClient);

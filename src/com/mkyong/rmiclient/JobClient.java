@@ -46,7 +46,7 @@ public class JobClient extends Thread{
                 ui.setTextStatClient(Const._TXT_SEND_RESULT);
                 sendResult(task);   
             }
-            waitForJob(2000);
+            waitForJob(6000);
         }
     }
     
@@ -102,7 +102,9 @@ public class JobClient extends Thread{
         try {
             return getService().getTask(Const._MY_ID);
         } catch (RemoteException ex) {
-            Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
+           System.out.println("Cannot connect server");
+            look_up =null;
             
         }
         return null;
@@ -134,7 +136,9 @@ public class JobClient extends Thread{
     }
     
     public void startClient(){
-        this.start();
+        if(!this.isAlive()){
+            this.start();
+        }
         stop = false;
     }
    
