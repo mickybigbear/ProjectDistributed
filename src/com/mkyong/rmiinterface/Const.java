@@ -13,7 +13,7 @@ public class Const {
     
     public static final String _RMI_Name_Service1 = "service1";
 
-    public static final String _IP_Server = "10.17.245.143";//"localhost";
+    public static final String _IP_Server = "localhost";//"localhost";
     public static final int _MY_ID = 1;
 
     
