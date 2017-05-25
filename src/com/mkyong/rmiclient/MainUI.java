@@ -6,6 +6,15 @@
 package com.mkyong.rmiclient;
 
 import com.mkyong.rmiinterface.Const;
+import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -13,6 +22,10 @@ import com.mkyong.rmiinterface.Const;
  */
 public class MainUI extends javax.swing.JFrame {
     private static JobClient client;
+    private static final PopupMenu popup = new PopupMenu();
+    private static Image image = Toolkit.getDefaultToolkit().getImage("your_image/23915.jpg");
+    private static TrayIcon trayIcon;
+    private static final SystemTray tray = SystemTray.getSystemTray();
     /**
      * Creates new form MainUI
      */
@@ -22,7 +35,38 @@ public class MainUI extends javax.swing.JFrame {
         this._text_server_ip.setText(Const._IP_Server);
         this._text_conn_stat.setText(Const._TXT_NotConnect);
         this._text_status_client.setText(Const._TXT_WaitForJob);
+        if (!SystemTray.isSupported()) {
+            System.out.println("SystemTray is not supported");
+            return;
+        }
+        trayIcon = new TrayIcon(image, "tray icon");
+        trayIcon.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                  setVisible(true);
+                  tray.remove(trayIcon);
+                  requestFocus(true);
+                  setState(NORMAL);
+                  toFront();
+                  requestFocusInWindow();
+            }
+        });
+       
+        // Create a pop-up menu components
         
+        MenuItem exitItem = new MenuItem("Exit");
+        exitItem.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                System.exit(0);             
+            }
+        });
+        
+       
+        popup.add(exitItem);
+       
+        trayIcon.setPopupMenu(popup);
+       
     }
 
     /**
@@ -50,6 +94,11 @@ public class MainUI extends javax.swing.JFrame {
         _text_status_client = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         _btn_start.setText("Start");
         _btn_start.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +217,32 @@ public class MainUI extends javax.swing.JFrame {
     private void _btn_stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_stopActionPerformed
         client.stopClient();
     }//GEN-LAST:event__btn_stopActionPerformed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+        // TODO add your handling code here:
+        if(evt.getNewState()==ICONIFIED){
+                    try {
+                        tray.add(trayIcon);
+                        setVisible(false);
+                    } catch (AWTException ex) {
+                    }
+                }
+        if(evt.getNewState()==7){
+                    try{
+            tray.add(trayIcon);
+            setVisible(false);
+            }catch(AWTException ex){
+        }
+            }
+        if(evt.getNewState()==MAXIMIZED_BOTH){
+                    tray.remove(trayIcon);
+                    setVisible(true);
+                }
+                if(evt.getNewState()==NORMAL){
+                    tray.remove(trayIcon);
+                    setVisible(true);
+                }
+    }//GEN-LAST:event_formWindowStateChanged
     
     public void setTextStatClient(String s){
         this._text_status_client.setText(s);

@@ -28,10 +28,7 @@ import java.awt.event.ActionListener;
 public class Client {
 	private static RMIJobService look_up;
         private static JobClient a;
-        private static final PopupMenu popup = new PopupMenu();
-        private static Image image = Toolkit.getDefaultToolkit().getImage("your_image/23915.jpg");
-        private static TrayIcon trayIcon;
-        private static final SystemTray tray = SystemTray.getSystemTray();
+        
                 
 	public static void main(String[] args) throws AWTException /*throws NotBoundException, MalformedURLException, RemoteException*/  {
                 //look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
@@ -53,18 +50,9 @@ public class Client {
 //                   }
 //               }
                 //Check the SystemTray is supported
-        if (!SystemTray.isSupported()) {
-            System.out.println("SystemTray is not supported");
-            return;
-        }
-        trayIcon = new TrayIcon(image, "tray icon");
-       
-        // Create a pop-up menu components
         
-        MenuItem exitItem = new MenuItem("Exit");
         exitItem.addActionListener(new ActionListener(){
                 @Override
-                public void actionPerformed(ActionEvent e) {
                 System.exit(0);             
             }
         });
