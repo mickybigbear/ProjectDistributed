@@ -9,6 +9,11 @@ import com.mkyong.rmiclient.JobClient;
 import com.mkyong.rmiclient.WindowClient;
 import com.mkyong.rmiinterface.Const;
 import com.mkyong.rmiinterface.Task;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -130,6 +135,11 @@ public class GUIServer extends javax.swing.JFrame {
         });
 
         _btnOpenFileLocation.setText("Open File Location");
+        _btnOpenFileLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _btnOpenFileLocationActionPerformed(evt);
+            }
+        });
 
         _btnEndTask.setText("End Task");
 
@@ -205,6 +215,14 @@ public class GUIServer extends javax.swing.JFrame {
         Server.unRegisService();
         this._btn_start.setEnabled(true);
     }//GEN-LAST:event__btn_stopActionPerformed
+
+    private void _btnOpenFileLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btnOpenFileLocationActionPerformed
+        try {
+            Desktop.getDesktop().open(new File("C:\\"));        // TODO add your handling code here:
+        } catch (IOException ex) {
+            Logger.getLogger(GUIServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event__btnOpenFileLocationActionPerformed
 
     public JButton getBtnEndTask(){
         return this._btnEndTask;
