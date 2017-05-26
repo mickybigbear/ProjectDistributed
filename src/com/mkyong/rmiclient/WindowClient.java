@@ -6,6 +6,16 @@
 package com.mkyong.rmiclient;
 
 import com.mkyong.rmiinterface.Task;
+import java.awt.AWTException;
+import static java.awt.Frame.NORMAL;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,6 +25,10 @@ import javax.swing.table.DefaultTableModel;
 public class WindowClient extends javax.swing.JFrame {
     private static JobClient client;
     private DefaultTableModel tableModel;
+    private static final PopupMenu popup = new PopupMenu();
+    private static Image image = Toolkit.getDefaultToolkit().getImage("your_image/23915.jpg");
+    private static TrayIcon trayIcon;
+    private static final SystemTray tray = SystemTray.getSystemTray();
     
     /**
      * Creates new form WindowClient
@@ -23,6 +37,37 @@ public class WindowClient extends javax.swing.JFrame {
         initComponents();
         this._btn_disconnect.setEnabled(false);
         tableModel = (DefaultTableModel)this._tbl_task.getModel();
+        if (!SystemTray.isSupported()) {
+            System.out.println("SystemTray is not supported");
+            return;
+        }
+        trayIcon = new TrayIcon(image, "tray icon");
+        trayIcon.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                setVisible(true);
+                  tray.remove(trayIcon);
+                  requestFocus(true);
+                  setState(NORMAL);
+                  toFront();
+                  requestFocusInWindow(); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+       
+        // Create a pop-up menu components
+        
+        MenuItem exitItem = new MenuItem("Exit");
+        exitItem.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                System.exit(0);             
+            }
+        });
+        
+       
+        popup.add(exitItem);
+       
+        trayIcon.setPopupMenu(popup);
     }
 
     /**
@@ -50,6 +95,11 @@ public class WindowClient extends javax.swing.JFrame {
         _txt_client_id = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Mergesort");
@@ -196,6 +246,32 @@ public class WindowClient extends javax.swing.JFrame {
         this._btn_disconnect.setEnabled(!this._btn_disconnect.isEnabled());
         client.startClient();
     }//GEN-LAST:event__btn_connectActionPerformed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+        // TODO add your handling code here:
+         if(evt.getNewState()==ICONIFIED){
+                    try {
+                        tray.add(trayIcon);
+                        setVisible(false);
+                    } catch (AWTException ex) {
+                    }
+                }
+        if(evt.getNewState()==7){
+                    try{
+            tray.add(trayIcon);
+            setVisible(false);
+            }catch(AWTException ex){
+        }
+            }
+        if(evt.getNewState()==MAXIMIZED_BOTH){
+                    tray.remove(trayIcon);
+                    setVisible(true);
+               }
+                if(evt.getNewState()==NORMAL){
+                    tray.remove(trayIcon);
+                    setVisible(true);
+                }
+    }//GEN-LAST:event_formWindowStateChanged
 
     public void setText_txtConnectStatus(String txt){
         this._txt_connect_status.setText(txt);
