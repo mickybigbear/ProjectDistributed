@@ -26,38 +26,35 @@ public class JobClient extends Thread{
     private Worker[] worker = new Worker[2];
     private static RMIJobService look_up;
     private boolean stop = true, exit = false;
-    private MainUI ui;
+    private WindowClient ui;
+    private static int jobDone=0;
     
     @Override
     public void run(){
         while(!exit){
             while(!stop){
-                ui.setTextStatClient(Const._TXT_REQUEST_JOB);
                 task = reqJob();
                 if(task==null){
-                    ui.setTextStatClient(Const._TXT_WaitForJob);
                     waitForJob(1000);
                     continue;
                 }
-                ui.setTextStatClient(Const._TXT_IN_PROCESS_MS);
-                ui.setTextData1Size(String.valueOf(task.getData1().size()));
-                if(task.getData2()!=null){ui.setTextData2Size(String.valueOf(task.getData2().size()));}
                 clientStartJob(task);
-                ui.setTextStatClient(Const._TXT_SEND_RESULT);
                 sendResult(task);   
             }
-            waitForJob(6000);
+            waitForJob(2000);
         }
     }
     
     
-    public JobClient(MainUI ui){
+    public JobClient(WindowClient ui){
         worker[0] = new Worker();
         worker[1] = new Worker();
         this.ui = ui;
     }
     
     public void clientStartJob(Task task){
+        ui.setText_txtClientStatus(Const._TXT_IN_PROCESS_MS);
+        ui.addInforTask(task);
         ArrayList<String> data_1 = task.getData1();
         ArrayList<String> data_2 = task.getData2();
         if(data_1.size()<2 && data_2==null){
@@ -91,6 +88,7 @@ public class JobClient extends Thread{
     }
     
     public void waitForJob(long time){
+        ui.setText_txtClientStatus(Const._TXT_WaitForJob);
         try {
             Thread.sleep(time);
         } catch (InterruptedException ex) {
@@ -100,19 +98,28 @@ public class JobClient extends Thread{
     
     public Task reqJob() {
         try {
+            ui.setText_txtClientStatus(Const._TXT_REQUEST_JOB);
+            ui.setText_txtConnectStatus(Const._TXT_Connected);
             return getService().getTask(Const._MY_ID);
         } catch (RemoteException ex) {
            // Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
            System.out.println("Cannot connect server");
-            look_up =null;
+           ui.setText_txtConnectStatus(Const._TXT_CanNotConnect);
+           look_up =null;
             
+        } catch(NullPointerException ex){
+            ui.setText_txtConnectStatus(Const._TXT_CanNotConnect);
         }
         return null;
     }
     
     private void sendResult(Task task){
+        ui.setText_txtClientStatus(Const._TXT_SEND_RESULT);
         try {
             getService().sendResult(task);
+            jobDone++;
+            ui.setText_txtTotalTask(String.valueOf(jobDone));
+            ui.UpdateStatusInforLastTask(Const._TXT_Finsih);
         } catch (RemoteException ex) {
             Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -121,9 +128,8 @@ public class JobClient extends Thread{
     private RMIJobService getService(){
         if(look_up ==null){
             try {
-                ui.setTextConnStatus(Const._TXT_Connecting);
+                ui.setText_txtConnectStatus(Const._TXT_Connecting);
                 look_up = (RMIJobService) Naming.lookup("//"+Const._IP_Server+"/"+Const._RMI_Name_Service1);
-                ui.setTextConnStatus(Const._TXT_Connected);
             } catch (NotBoundException ex) {
                 Logger.getLogger(JobClient.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MalformedURLException ex) {
@@ -141,9 +147,12 @@ public class JobClient extends Thread{
         }
         stop = false;
     }
+    
+    
    
     
-    public void stopClient(){
+    public void pauseClient(){
+        ui.setText_txtConnectStatus(Const._TXT_NotConnect);
         stop = true;
     }
     

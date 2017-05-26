@@ -5,17 +5,24 @@
  */
 package com.mkyong.rmiclient;
 
+import com.mkyong.rmiinterface.Task;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author computer
  */
 public class WindowClient extends javax.swing.JFrame {
-
+    private static JobClient client;
+    private DefaultTableModel tableModel;
+    
     /**
      * Creates new form WindowClient
      */
     public WindowClient() {
         initComponents();
+        this._btn_disconnect.setEnabled(false);
+        tableModel = (DefaultTableModel)this._tbl_task.getModel();
     }
 
     /**
@@ -29,10 +36,9 @@ public class WindowClient extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        _txt_server_ip = new javax.swing.JLabel();
+        _txt_client_status = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         _txt_connect_status = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         _tbl_task = new javax.swing.JTable();
         _btn_disconnect = new javax.swing.JButton();
@@ -48,39 +54,27 @@ public class WindowClient extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Mergesort");
 
-        jLabel2.setText("Serer IP Address:");
+        jLabel2.setText("Client Status :");
 
-        _txt_server_ip.setText("jLabel3");
+        _txt_client_status.setText("non-working");
 
         jLabel4.setText("Connect Status:");
 
-        _txt_connect_status.setText("jLabel5");
-
-        jLabel6.setText("Working");
+        _txt_connect_status.setText("not connect");
 
         _tbl_task.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Task ID", "Type", "Number of Words", "Status", "Time"
+                "Task ID", "Number of Words", "Status", "Time"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
+                false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -92,15 +86,8 @@ public class WindowClient extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(_tbl_task);
-        if (_tbl_task.getColumnModel().getColumnCount() > 0) {
-            _tbl_task.getColumnModel().getColumn(0).setResizable(false);
-            _tbl_task.getColumnModel().getColumn(1).setResizable(false);
-            _tbl_task.getColumnModel().getColumn(2).setResizable(false);
-            _tbl_task.getColumnModel().getColumn(3).setResizable(false);
-            _tbl_task.getColumnModel().getColumn(4).setResizable(false);
-        }
 
-        _btn_disconnect.setText("Disconnect");
+        _btn_disconnect.setText("Pause");
         _btn_disconnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 _btn_disconnectActionPerformed(evt);
@@ -122,7 +109,7 @@ public class WindowClient extends javax.swing.JFrame {
 
         jLabel10.setText("Client ID:");
 
-        _txt_client_id.setText("jLabel11");
+        _txt_client_id.setText("01");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,17 +120,15 @@ public class WindowClient extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(_txt_server_ip))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(_txt_connect_status)))
-                            .addComponent(jLabel6))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(_txt_client_status))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(_txt_connect_status)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -178,14 +163,12 @@ public class WindowClient extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(_txt_server_ip))
+                    .addComponent(_txt_client_status))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(_txt_connect_status))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(43, 43, 43)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -203,13 +186,50 @@ public class WindowClient extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void _btn_disconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_disconnectActionPerformed
-        // TODO add your handling code here:
+        this._btn_disconnect.setEnabled(!this._btn_disconnect.isEnabled());
+        this._btn_connect.setEnabled(!this._btn_connect.isEnabled());
+        client.pauseClient();
     }//GEN-LAST:event__btn_disconnectActionPerformed
 
     private void _btn_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btn_connectActionPerformed
-        // TODO add your handling code here:
+        this._btn_connect.setEnabled(!this._btn_connect.isEnabled());
+        this._btn_disconnect.setEnabled(!this._btn_disconnect.isEnabled());
+        client.startClient();
     }//GEN-LAST:event__btn_connectActionPerformed
 
+    public void setText_txtConnectStatus(String txt){
+        this._txt_connect_status.setText(txt);
+    }
+    
+    public void setText_txtClientStatus(String txt){
+        this._txt_client_status.setText(txt);
+    }
+    
+    public void setText_txtTotalTask(String txt){
+        this._txt_total_task.setText(txt);
+    }
+    
+    public void setText_TxtTotalTask(String txt){
+        this._txt_total_task.setText(txt);
+    }
+    
+    public void addInforTask(Task task){
+        int num = task.getData1().size();
+        String status = "In process";
+        if((task.getData2())!=null){num += task.getData2().size();}
+        Object[] infor = new Object[4];
+        infor[0]= task.getId();
+        infor[1]= num;
+        infor[2]= status;
+        infor[3]=task.getTimeStamp().toString();
+        tableModel.addRow(infor);
+    }
+    
+    public void UpdateStatusInforLastTask(String s){
+        int row = tableModel.getRowCount()-1;
+        int column = tableModel.getColumnCount()-1;
+        tableModel.setValueAt(s, row, 2);
+    }
     /**
      * @param args the command line arguments
      */
@@ -240,24 +260,27 @@ public class WindowClient extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new WindowClient().setVisible(true);
+                WindowClient ui =  new WindowClient();
+                ui.setVisible(true);
+                client = new JobClient(ui);
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton _btn_connect;
     private javax.swing.JButton _btn_disconnect;
     private javax.swing.JTable _tbl_task;
     private javax.swing.JLabel _txt_client_id;
+    private javax.swing.JLabel _txt_client_status;
     private javax.swing.JLabel _txt_connect_status;
-    private javax.swing.JLabel _txt_server_ip;
     private javax.swing.JLabel _txt_total_task;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
